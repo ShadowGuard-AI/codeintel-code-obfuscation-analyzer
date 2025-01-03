@@ -1,2 +1,1 @@
-# codeintel-code-obfuscation-analyzer
-Analyzes obfuscated code to identify potential security vulnerabilities - Focused on Tools for...
+# Error generating README
