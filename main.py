@@ -113,7 +113,9 @@ def analyze_code(directory, use_bandit, use_flake8, use_pylint, use_pyre):
         )
         return
 
-    # Run tools based on arguments
+    # Each tool gets the directory as a single argv item in list
+    # form, so a target path containing spaces is passed to the tool
+    # as one argument and is never reinterpreted by a shell.
     if use_bandit:
         run_tool(["bandit", "-r", directory])
     if use_flake8:
