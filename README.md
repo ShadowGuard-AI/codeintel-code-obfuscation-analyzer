@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # Code Obfuscation Analyzer
 
 A command line wrapper that runs established Python analysis tools over a directory of Python code and logs their output in one place. Despite the repository name, the code contains no obfuscation specific detection of its own: it delegates all analysis to Bandit, Flake8, Pylint and Pyre, which the user selects with flags.
