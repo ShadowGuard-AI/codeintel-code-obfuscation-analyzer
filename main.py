@@ -57,25 +57,37 @@ def setup_argparse():
     )
     return parser
 
-def run_tool(command):
+def run_tool(command, cwd=None):
     """
-    Runs a given shell command and logs the output.
+    Runs a given command and logs the output.
+
+    Bandit, Flake8 and Pylint exit with a non-zero status when they find
+    issues. That is a result, not a failure, so the output is logged and
+    the exit status is reported without raising. Only a tool that cannot
+    be started at all (for example because it is not installed) raises.
 
     Args:
         command (list): The command to run as a list of strings.
+        cwd (str): Optional working directory for the command.
 
     Raises:
-        RuntimeError: If the command execution fails.
+        RuntimeError: If the command cannot be started.
     """
     try:
         logger.info("Running command: %s", " ".join(command))
         result = subprocess.run(
-            command, check=True, capture_output=True, text=True
+            command, check=False, capture_output=True, text=True, cwd=cwd
         )
+    except FileNotFoundError as e:
+        raise RuntimeError(
+            f"Tool not found: {command[0]} is not installed or not on PATH"
+        ) from e
+    if result.stdout:
         logger.info("Command output:\n%s", result.stdout)
-    except subprocess.CalledProcessError as e:
-        logger.error("Command failed with error:\n%s", e.stderr)
-        raise RuntimeError(f"Error running command: {' '.join(command)}") from e
+    if result.stderr:
+        logger.info("Command stderr:\n%s", result.stderr)
+    logger.info("Command exited with status %s", result.returncode)
+    return result
 
 def analyze_code(directory, use_bandit, use_flake8, use_pylint, use_pyre):
     """
@@ -94,6 +106,13 @@ def analyze_code(directory, use_bandit, use_flake8, use_pylint, use_pyre):
         logger.error("Directory does not exist: %s", directory)
         raise FileNotFoundError(f"Directory not found: {directory}")
 
+    if not (use_bandit or use_flake8 or use_pylint or use_pyre):
+        logger.warning(
+            "No analysis tools selected. "
+            "Pass at least one of --bandit, --flake8, --pylint or --pyre."
+        )
+        return
+
     # Run tools based on arguments
     if use_bandit:
         run_tool(["bandit", "-r", directory])
@@ -102,7 +121,9 @@ def analyze_code(directory, use_bandit, use_flake8, use_pylint, use_pyre):
     if use_pylint:
         run_tool(["pylint", directory])
     if use_pyre:
-        run_tool(["pyre", "check"])
+        # Pyre checks the project in its working directory, so run it
+        # inside the target directory instead of the caller's directory.
+        run_tool(["pyre", "check"], cwd=directory)
 
 def main():
     """

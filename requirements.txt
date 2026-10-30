@@ -1,2 +1,7 @@
-- argparse>=1.4.0
-- subprocess>=3.8
+# main.py itself only uses the Python standard library (argparse, logging,
+# subprocess, sys and pathlib). The packages below are the external analyzers
+# that main.py invokes by name when the matching flag is passed.
+bandit
+flake8
+pylint
+pyre-check
