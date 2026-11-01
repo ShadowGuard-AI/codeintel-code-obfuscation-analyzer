@@ -74,6 +74,9 @@ def run_tool(command, cwd=None):
         RuntimeError: If the command cannot be started.
     """
     try:
+        # I log the joined command for reading, but the list form is
+        # what actually runs. A path with spaces prints as if it were
+        # several arguments while the tool still receives it as one.
         logger.info("Running command: %s", " ".join(command))
         result = subprocess.run(
             command, check=False, capture_output=True, text=True, cwd=cwd
@@ -87,6 +90,9 @@ def run_tool(command, cwd=None):
     if result.stderr:
         logger.info("Command stderr:\n%s", result.stderr)
     logger.info("Command exited with status %s", result.returncode)
+    # I hand the result back and nobody above me reads its code.
+    # A run where every tool reports pages of findings still ends
+    # with this program exiting 0, as long as the tools started.
     return result
 
 def analyze_code(directory, use_bandit, use_flake8, use_pylint, use_pyre):
@@ -106,6 +112,9 @@ def analyze_code(directory, use_bandit, use_flake8, use_pylint, use_pyre):
         logger.error("Directory does not exist: %s", directory)
         raise FileNotFoundError(f"Directory not found: {directory}")
 
+    # I warn and return here rather than failing. That makes a run
+    # with no tool flags look like a finished analysis in a script
+    # that only checks the exit code, which is a trap I know about.
     if not (use_bandit or use_flake8 or use_pylint or use_pyre):
         logger.warning(
             "No analysis tools selected. "
