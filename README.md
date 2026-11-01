@@ -12,7 +12,7 @@ A command line wrapper that runs established Python analysis tools over a direct
 ## Install
 
 ```
-git clone https://github.com/ShadowGuardAI/codeintel-code-obfuscation-analyzer.git
+git clone https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer.git
 cd codeintel-code-obfuscation-analyzer
 pip install -r requirements.txt
 ```
