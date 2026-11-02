@@ -3,163 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Codeintel Code Obfuscation Analyzer: what it is, how it runs, where it stops</title>
-<meta name="description" content="Codeintel Code Obfuscation Analyzer is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
-<style>
-:root {
-  --bg: #080c0a; --panel: #0d1410; --ink: #d9e8dd;
-  --mut: #111b15;
-  --acc: #57e389; --acc2: #e8b339;
-  --line: #0d1410;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Book Antiqua', Georgia, serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Andale Mono', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
-</style>
+<title>codeintel-code-obfuscation-analyzer: Trade Wind Sailing Directions</title>
+<meta name="description" content="Sailing directions in a single column: many voyages gathered into a few arrows a reader can trust, as four tools are gathered into one log.">
+<style>@font-face{font-family:'Barrio';src:url('fonts/Barrio.ttf') format('truetype');}@font-face{font-family:'Barlow';src:url('fonts/Barlow.ttf') format('truetype');}:root{--indigo:#1b2340;--green:#57cc99;--white:#f8f9fa;--ink:#16181d}*{box-sizing:border-box}body{margin:0;background:var(--indigo);color:var(--ink);font-family:'Barlow',sans-serif;line-height:1.65;border-left:6px solid var(--green)}h1,h2,h3{font-family:'Barrio',sans-serif;color:var(--indigo)}h1{color:var(--white)}.heroimg{width:100%;height:52vh;object-fit:cover;display:block}.in,main,footer{max-width:1000px;margin:0 auto;padding:1rem 5vw 2rem}.logo{width:230px;background:var(--white)}.btn{display:inline-block;text-decoration:none;font-family:'Barrio',sans-serif;color:var(--indigo);background:rgba(248,249,250,.75);border:2px solid #b9c4cc;box-shadow:inset 0 0 0 2px var(--green);padding:.7rem 1.2rem;margin:.3rem;transition:background .15s}.btn:hover{background:var(--white)}.btn:active{background:#cfd8dc}.btn:focus-visible{outline:4px solid var(--green);outline-offset:4px}nav{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0}a{color:var(--indigo)}a::before{content:'';display:inline-block;width:22px;height:9px;background:#c9d2d8;margin-right:.5em;vertical-align:0}.panel{background:var(--white);padding:.4rem 1.5rem 1.4rem;margin:1.6rem 0;position:relative}.panel::after{content:'';position:absolute;right:12px;bottom:10px;width:74px;height:44px;border:2px solid var(--indigo)}pre{background:var(--indigo);color:var(--white);padding:1rem;overflow-x:auto}.big{font-size:1.2rem}.div{height:14px;background:linear-gradient(180deg,#2a3358,#57cc99);margin:1.4rem 0}.callout{background:#eef4f0;border-left:8px solid var(--green);padding:.2rem 1.2rem 1rem;margin:1.2rem 0}.entry{display:flex;gap:1rem;padding:.5rem 0;border-bottom:1px solid rgba(22,24,29,.25)}.entry b{font-family:'Barrio',sans-serif;min-width:110px}footer,header .in p{color:var(--white)}</style>
 </head>
-<body class="layout-term">
-<!-- This page exists for codeintel-code-obfuscation-analyzer alone: the layout (terminal-frame),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
+<body>
 <header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Codeintel Code Obfuscation Analyzer logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Codeintel Code Obfuscation Analyzer</h1>
-  <p class="mono"><a href="https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer">github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer</a></p>
+<img class="heroimg" src="assets/intro-banner.png" alt="Chart table with no lettering: chart corner weighted flat, fletched arrows across the chart, logbook with a magenta wax seal, dividers and a folded star chart">
+<div class="in">
+<img class="logo" src="assets/logo.png" alt="A wind arrow chart in aurora green on polar night indigo with a small white compass rose, and the name in indigo below">
+<h1>codeintel-code-obfuscation-analyzer</h1>
+<p>Sailing directions in a single column: many voyages gathered into a few arrows a reader can trust, as four tools are gathered into one log.</p>
+<nav><a class="btn" href="#s0">Run the Chosen Tools</a><a class="btn" href="#s1">Run Bandit</a><a class="btn" href="#s2">Print the Version</a><a class="btn" href="#s3">Show Help</a></nav>
+</div>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Codeintel Code Obfuscation Analyzer is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Codeintel Code Obfuscation Analyzer: 4 files, 133 counted
-          lines across Python 130, Text 2, Markdown 1. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer.git<br>$ cd codeintel-code-obfuscation-analyzer</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 15 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>VERSION = &quot;1.0.0&quot;
-
-def setup_argparse():
-    &quot;&quot;&quot;
-    Sets up command-line argument parsing for the tool.
-
-    Returns:
-        argparse.ArgumentParser: Configured argument parser.
-    &quot;&quot;&quot;
-    parser = argparse.ArgumentParser(
-        description=&quot;Code Obfuscation Analyzer: Analyze obfuscated code to identify potential vulnerabilities.&quot;
-    )
-    parser.add_argument(
-        &quot;directory&quot;,
-        type=str,
-        help=&quot;Directory containing the code to analyze.&quot;
-    )
-    parser.add_argument(
-        &quot;--bandit&quot;,
-        action=&quot;store_true&quot;,
-        help=&quot;Run Bandit for static security analysis.&quot;
-    )</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>130</td></tr>
-        <tr><td><code>requirements.txt</code></td><td>2</td></tr>
-        <tr><td><code>README.md</code></td><td>1</td></tr>
-        <tr><td><code>LICENSE</code></td><td>0</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">setup_argparse, run_tool, analyze_code, main</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer/tree/main/codeintel-code-obfuscation-analyzer-Visuals">codeintel-code-obfuscation-analyzer-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Codeintel Code Obfuscation Analyzer">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Codeintel Code Obfuscation Analyzer">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Codeintel Code Obfuscation Analyzer">
-        </div>
-      </section>
-    </div>
-  </section>
+<section class="panel" id="s0"><h2>A Wrapper, Not a Detector</h2><p>codeintel-code-obfuscation-analyzer is a command line wrapper that runs established Python analysis tools over a directory of Python code and logs their output in one place.</p><div class="callout"><h3>The Name Promises More</h3><p>Despite the repository name, the code contains no obfuscation specific detection of its own, and it delegates all analysis to Bandit, Flake8, Pylint, and Pyre, which the user selects with flags. The name promises obfuscation detection; the code does not do it, and the README says so plainly.</p></div></section><div class="div"></div><section class="panel" id="s1"><h2>Three Steps Aboard</h2><p>Requirements as the README states them: Python 3, with main.py using only the standard library, and at least one of the external tools the user plans to run, Bandit, Flake8, Pylint, or Pyre, installed by the pip step below or individually.</p><pre>git clone https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer.git
+cd codeintel-code-obfuscation-analyzer
+pip install -r requirements.txt</pre><p>Three steps, printed exactly, in README order.</p></section><div class="div"></div><section class="panel" id="s2"><h2>One Directory, Four Flags</h2><pre class="big">python main.py &lt;directory&gt; [--bandit] [--flake8] [--pylint] [--pyre]
+python main.py --help
+python main.py --version</pre><p>One required positional directory and four optional tool flags in brackets, the brackets carrying the optionality exactly as the original lines carry it.</p></section><div class="div"></div><section class="panel" id="s3"><h2>Forecast Entries, Seven Only</h2><div class="entry"><b style="color:#1e7a4f">directory</b><span>Required and positional. It gives the directory containing the code to analyse, and the program exits with status 1 if it does not exist.</span></div><div class="entry"><b>--bandit</b><span>Runs bandit -r &lt;directory&gt;.</span></div><div class="entry"><b>--flake8</b><span>Runs flake8 &lt;directory&gt;.</span></div><div class="entry"><b>--pylint</b><span>Runs pylint &lt;directory&gt;.</span></div><div class="entry"><b>--pyre</b><span>Runs pyre check with the target directory as the working directory. Pyre needs its own project configuration in that directory.</span></div><div class="entry"><b>--version</b><span>Prints main.py 1.0.0 and exits.</span></div><div class="callout"><h3>No Flag, No Analysis, Exit Nought</h3><p>If no tool flag is given, the program warns that no analysis tools were selected and exits with status 0 without analysing anything. That empty selection is the seventh entry.</p></div></section><div class="div"></div><section class="panel" id="s4"><h2>What the Example Proved</h2><pre>python main.py /path/to/code --bandit --flake8</pre><p>On a sample file that passes user input to os.system, Bandit findings, including B605, start process with a shell, were printed in the log output, and the program then continued and exited with status 0. The finding code, the wording, and the exit 0 stay together: a tool finding issues does not stop the wrapper.</p><p>Results are written to the log output, stdout and stderr, only, and the tool does not write a report file. Bandit, Flake8, and Pylint exit with a non-zero status when they find issues; this wrapper logs that status and continues with the remaining tools. It exits with status 0 when every selected tool could be started, and status 1 when the directory does not exist or a selected tool is not installed or not on PATH, producing an error naming the tool, for example Tool not found: bandit is not installed or not on PATH. What each tool reports is entirely determined by that tool; this wrapper adds no checks, scoring, or deobfuscation of its own.</p><h2>See LICENSE</h2><p>See LICENSE in this repository.</p><p><a href="https://github.com/ShadowGuard-AI/codeintel-code-obfuscation-analyzer">The repository on GitHub</a></p></section>
 </main>
-<footer>
-  <p>Codeintel Code Obfuscation Analyzer is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
-</footer>
+<footer><p>Theme: Trade Wind Sailing Directions. Type: Barrio for display, Barlow for reading, both SIL Open Font License 1.1. The lettering reference Astron was reference only and is not embedded.</p></footer>
 </body>
 </html>

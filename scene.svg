@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="Chart table in three depths: cloud shadow crosses the far wall very slowly at long intervals, cloud shadow moves across the open wind arrow chart dimming each fletched arrow in turn, and the dividers at the near corner lift one point a fraction as the table settles and are still">
+<rect x="0" y="0" width="1200" height="300" fill="#34302c"/>
+<rect x="0" y="0" width="1200" height="70" fill="#4a443e"><animate attributeName="opacity" values="1;0.82;1;1" keyTimes="0;0.3;0.55;1" dur="31s" repeatCount="indefinite"/></rect>
+<rect x="80" y="80" width="1040" height="190" fill="#f8f9fa"/>
+<g stroke="#3eb280" stroke-width="6"><line x1="240" y1="140" x2="760" y2="140"/><line x1="240" y1="195" x2="700" y2="195"/><line x1="240" y1="245" x2="640" y2="245"/></g>
+<g fill="#3eb280"><polygon points="760,140 730,128 730,152"/><polygon points="700,195 670,183 670,207"/><polygon points="640,245 610,233 610,257"/></g>
+<rect x="80" y="80" width="180" height="190" fill="#1b2340" opacity="0"><animate attributeName="opacity" values="0;0.22;0.22;0" keyTimes="0;0.4;0.75;1" dur="24s" repeatCount="indefinite"/><animate attributeName="x" values="80;700;700" keyTimes="0;0.75;1" dur="24s" repeatCount="indefinite"/></rect>
+<g stroke="#96969b" stroke-width="4"><line x1="880" y1="240" x2="950" y2="272"><animateTransform attributeName="transform" type="rotate" values="0 880 240;-2 880 240;0 880 240;0 880 240" keyTimes="0;0.08;0.16;1" dur="26s" repeatCount="indefinite"/></line><line x1="950" y1="272" x2="990" y2="238"/></g>
+</svg>
