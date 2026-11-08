@@ -1,13 +1,13 @@
-![Chart table with no lettering: chart corner weighted flat, fletched arrows across the chart, logbook with a magenta wax seal, dividers and a folded star chart](intro-banner.png)
+![The operator's hand on the brass telegraph key close up, a cream paper tape curling past it across the green baize with the other instruments soft behind](intro-banner.png)
 
 
 # Code Obfuscation Analyzer
 
 Forecast entry treatment: every heading is set like a forecast entry, date ruled, in Barrio in polar night indigo on star white, with a small vane image beside major headings alone.
 
-![A wind arrow chart in aurora green on polar night indigo with a small white compass rose, the heading plate](logo.png)
+![A drawn emblem of one brass telegraph key and sounder on a mahogany base with a short length of blank cream paper tape curling beside it, the heading plate](logo.png)
 
-![Chart room table with the great chart weighted at its corners, logbook, parallel rule and dividers, and the title lettered inside the chart title block at the lower right](banner.png)
+![A telegraph relay office at night with four brass instruments in a row on a mahogany desk, the operator reading an incoming paper tape at the nearest key while cream tapes accumulate in order on the green baize beside him](banner.png)
 
 ![Chart table in three depths: cloud shadow crosses the far wall, cloud shadow moves across the chart dimming each arrow in turn, and one divider point lifts a fraction and settles](scene.svg)
 
